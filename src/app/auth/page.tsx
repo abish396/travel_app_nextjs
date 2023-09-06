@@ -23,6 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {AuthApi} from '../../services/api';
 
 
 const formSchema = z.object({
@@ -48,10 +49,12 @@ const Auth = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+    AuthApi.login(values);
+
   }
   return (
-    <div className="grid">
-      <Card className="grid-cols-4">
+    <div className="grid grid-cols-6">
+      <Card className='col-start-3 col-span-2 p-10'>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -81,7 +84,7 @@ const Auth = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" className='w-full'>Submit</Button>
           </form>
         </Form>
       </Card>
