@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.NEXT_PUBLIC_AUTH_SERVICE_URL;
+const BASE_URL = process.env. AUTH_SERVICE_URL;
 console.log({BASE_URL})
 const AuthApi = {
-  login: (values) => {
+  login: (values:Object) => {
     console.log({values});
-    axios.get(`${BASE_URL}/auth`)
+    return axios.post(`${BASE_URL}/signin`, values);
   },
   // ... other product-related API functions
 };

@@ -1,6 +1,7 @@
 "use client"
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form';
+import { redirect } from 'next/navigation'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { cn } from "@/lib/utils"
 import * as z from "zod"
@@ -45,11 +46,18 @@ const Auth = () => {
   })
 
   // 2. Define a submit handler.
-  function onSubmit(values: any) {
+  async function onSubmit(values: any) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
-    AuthApi.login(values);
+    try {
+      const loginResult = await AuthApi.login(values);
+      if(loginResult.status === 200) {
+        redirect('/');
+      }
+    } catch(err) {
+      
+    }
 
   }
   return (
