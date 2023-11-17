@@ -24,10 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { GoogleLogin } from '@react-oauth/google';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-
-import {AuthApi} from '../../services/api';
+import * as tus from 'tus-js-client'
 
 
 const formSchema = z.object({
@@ -39,7 +36,7 @@ const formSchema = z.object({
   }),
 });
 
-const Auth = () => {
+const CreateTrek = () => {
   // 1. Define your form.
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -85,10 +82,47 @@ const Auth = () => {
 
   const responseMessage = (response: any) => {
     console.log(response);
-};
-const errorMessage = (error: any) => {
-    console.log(error);
-};
+  };
+
+  const errorMessage = (error: any) => {
+      console.log(error);
+  };
+
+  const handleFile = (e:any) => {
+    console.log({e});
+    let file = e.target.files[0];
+    let upload = new tus.Upload(file, {
+      endpoint: 'http://localhost:9000/api/upload/',
+      retryDelays: [0, 3000, 5000, 10000, 20000],
+      metadata: {
+        filename: file.name,
+        filetype: file.type,
+      },
+      onError: function (error) {
+        console.log('Failed because: ' + error)
+      },
+      onProgress: function (bytesUploaded, bytesTotal) {
+        let percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2)
+        console.log(bytesUploaded, bytesTotal, percentage + '%')
+      },
+      onSuccess: function () {
+        console.log('Download %s from %s', upload.file.name, upload.url)
+      },
+    })
+  
+    // Check if there are any previous uploads to continue.
+    upload.findPreviousUploads().then(function (previousUploads) {
+      // Found previous uploads so we select the first one.
+      if (previousUploads.length) {
+        upload.resumeFromPreviousUpload(previousUploads[0])
+      }
+  
+      // Start the upload
+      upload.start()
+    })
+  }
+
+
   return (
     <div className="grid grid-cols-6">
       <Card className='col-start-3 col-span-2 p-10'>
@@ -99,38 +133,15 @@ const errorMessage = (error: any) => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Upload Trek Photos</FormLabel>
                   <FormControl>
-                    <Input placeholder="Eg. traveljunkie" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="password" {...field} type='password' />
+                    <Input id="picture" type="file" onChange={handleFile}/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <Button type="submit" className='w-full'>Submit</Button>
-            {/* <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=973399729505-lcncpvha8i7tsaoc137jequm1tl2qqq7.apps.googleusercontent.com&redirect_uri=http:%2F%2Flocalhost:3000%2Fauth&response_type=token&include_granted_scopes=true&scope=https:%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https:%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile">
-              <Button type="button" className='w-full'>Login With Google</Button>
-            </a> */}
-            
-            <GoogleOAuthProvider clientId="973399729505-lcncpvha8i7tsaoc137jequm1tl2qqq7.apps.googleusercontent.com">
-                <React.StrictMode>
-                  <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
-                </React.StrictMode>
-            </GoogleOAuthProvider>
           </form>
         </Form>
       </Card>
@@ -138,4 +149,4 @@ const errorMessage = (error: any) => {
   )
 }
 
-export default Auth
+export default CreateTrek
