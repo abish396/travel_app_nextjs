@@ -4,12 +4,12 @@ import * as React from "react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-interface StepFormProps {
+interface StepFormActionButton {
     activeStep:string,
     children:Array<React.JSX.Element> | React.JSX.Element
 }
 
-export default function StepForm(props:any) {
+export default function StepFormActionButton(props:any) {
   const [ nextIndex, setNextIndex ] = useState(0);
 
   const next = () => {
@@ -20,12 +20,14 @@ export default function StepForm(props:any) {
     setNextIndex(nextIndex - 1);
   }
 
-  // const activeStep = props.activeStep;
-  const child = props.children[nextIndex];
-
   return (
-    <div>
-        {child}
+    <div className="grid grid-flow-col justify-stretch">
+      <div>
+        <Button type="button" className="w-1/2" onClick={previous}>Previous</Button>
+      </div>
+      <div>
+        <Button type="button" className="w-1/2" onClick={next}>Next</Button>
+      </div>
     </div>
   )
 }
