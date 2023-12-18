@@ -22,7 +22,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import StepFormActionButton from '@/components/stepform/stepformactionbutton';
 
-const TrekDataForm = () => {
+const TrekDataForm = ({activeStep, setActiveStep}) => {
   const form = useForm();
   console.log({form})
   useEffect(() => {
@@ -30,11 +30,11 @@ const TrekDataForm = () => {
   }, [])
 
   const handleNext = () => {
-
+    setActiveStep(activeStep + 1)
   }
 
   const handlePrevious = () => {
-
+    setActiveStep(activeStep - 1)
   }
   return (
     <Card>
@@ -98,12 +98,10 @@ const TrekDataForm = () => {
             placeholder="Please include all information relevant to your issue."
           />
         </div>
-        <StepFormActionButton previous={handlePrevious} next={handleNext}/>
       </CardContent>
-      {/* <CardFooter className="justify-between space-x-2">
-        <Button variant="ghost">Cancel</Button>
-        <Button>Submit</Button>
-      </CardFooter> */}
+      <CardFooter className="justify-between space-x-2">
+        <StepFormActionButton previous={handlePrevious} next={handleNext}/>
+      </CardFooter>
     </Card>
   )
 }

@@ -10,22 +10,20 @@ interface StepFormProps {
 }
 
 export default function StepForm(props:any) {
-  const [ nextIndex, setNextIndex ] = useState(0);
-
-  const next = () => {
-    setNextIndex(nextIndex + 1);
+  const [ activeStep, setActiveStep ] = useState(0);
+  const child = props.children[activeStep];
+  let childrenWithProps;
+  const additionalProps = {
+    activeStep,
+    setActiveStep
+  };
+  if (React.isValidElement(child)) {
+    // Clone the child element with additional props
+    childrenWithProps = React.cloneElement(child, additionalProps);
   }
-
-  const previous = () => {
-    setNextIndex(nextIndex - 1);
-  }
-
-  // const activeStep = props.activeStep;
-  const child = props.children[nextIndex];
-
   return (
     <div>
-        {child}
+        {childrenWithProps}
     </div>
   )
 }

@@ -9,16 +9,7 @@ interface StepFormActionButton {
     children:Array<React.JSX.Element> | React.JSX.Element
 }
 
-export default function StepFormActionButton(props:any) {
-  const [ nextIndex, setNextIndex ] = useState(0);
-
-  const next = () => {
-    setNextIndex(nextIndex + 1);
-  }
-
-  const previous = () => {
-    setNextIndex(nextIndex - 1);
-  }
+export default function StepFormActionButton({previous, next}) {
 
   return (
     <div className="grid grid-flow-col justify-stretch">
