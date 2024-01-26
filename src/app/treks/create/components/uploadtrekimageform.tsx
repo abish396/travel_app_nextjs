@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { useForm } from 'react-hook-form';
 import { redirect } from 'next/navigation'
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -24,7 +24,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import * as tus from 'tus-js-client'
+import StepFormActionButton from '@/components/stepform/stepformactionbutton';
+import * as tus from 'tus-js-client';
+import { TrekFormContext } from '../context';
 
 
 const formSchema = z.object({
@@ -36,8 +38,10 @@ const formSchema = z.object({
   }),
 });
 
-const UploadTrekImageForm = () => {
+const UploadTrekImageForm = ({activeStep, setActiveStep}) => {
   // 1. Define your form.
+  const { trekFormInfo, setTrekFormInfo } = useContext(TrekFormContext);
+  console.log("TrekLocationForm", {trekFormInfo})
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -93,6 +97,14 @@ const UploadTrekImageForm = () => {
     })
   }
 
+  const handleNext = () => {
+    setActiveStep(activeStep + 1)
+  }
+
+  const handlePrevious = () => {
+    setActiveStep(activeStep - 1)
+  }
+
 
   return (
     <div>
@@ -105,12 +117,13 @@ const UploadTrekImageForm = () => {
                 <FormItem>
                   <FormLabel>Upload Trek Photos</FormLabel>
                   <FormControl>
-                    <Input id="picture" type="file" onChange={handleFile}/>
+                    <Input id="picture" type="file" multiple onChange={handleFile}/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <StepFormActionButton previous={handlePrevious} next={handleNext}/>
             {/* <Button type="submit" className='w-full'>Submit</Button> */}
           </form>
         </Form>

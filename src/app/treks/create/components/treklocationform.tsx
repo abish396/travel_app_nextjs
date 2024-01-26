@@ -1,6 +1,5 @@
 "use client"
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useContext } from "react";
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -19,39 +18,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
+import { Textarea } from "@/components/ui/textarea";
 import StepFormActionButton from '@/components/stepform/stepformactionbutton';
+import { TrekFormContext } from '../context';
 
-const TrekDataForm = ({activeStep, setActiveStep}) => {
-  const form = useForm();
-  console.log({form})
-  useEffect(() => {
-    console.log("appp")
-  }, [])
-
+const TrekLocationForm = ({activeStep, setActiveStep}) => {
+  const { trekFormInfo, setTrekFormInfo } = useContext(TrekFormContext);
+  console.log("TrekLocationForm", {trekFormInfo})
   const handleNext = () => {
-    setActiveStep(activeStep + 1)
+    setActiveStep(activeStep + 1);
   }
 
   const handlePrevious = () => {
-    setActiveStep(activeStep - 1)
+    setActiveStep(activeStep - 1);
   }
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create a new trek</CardTitle>
+        <CardTitle>Trek Location</CardTitle>
         {/* <CardDescription>
           What area are you having problems with?
         </CardDescription> */}
       </CardHeader>
       <CardContent className="grid gap-6">
         <div className="grid gap-2">
-          <Label htmlFor="subject">Name of The Trek</Label>
-          <Input id="trekname" placeholder="Ex KedarKantha Trek" />
+          <Label htmlFor="address1">Address Line 1</Label>
+          <Input id="address1" type="text"/>
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="address2">Address Line 2</Label>
+          <Input id="address2" type="text"/>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="area">Duration</Label>
+            <Label htmlFor="area">State</Label>
             <Select defaultValue="billing">
               <SelectTrigger id="area">
                 <SelectValue placeholder="Select" />
@@ -70,33 +70,9 @@ const TrekDataForm = ({activeStep, setActiveStep}) => {
             </Select>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="area">Difficulty</Label>
-            <Select defaultValue="billing">
-              <SelectTrigger id="area">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="beginner">Beginner</SelectItem>
-                <SelectItem value="moderate">Moderate</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-              </SelectContent>
-            </Select>
+            <Label htmlFor="pincode">Pin Code</Label>
+            <Input id="pincode" type="text"/>
           </div>
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="subject">Distance</Label>
-          <Input id="trekdistance" type="number" min="0" placeholder="Ex. 12km" />
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="subject">Subject</Label>
-          <Input id="subject" placeholder="I need help with..." />
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            placeholder="Please include all information relevant to your issue."
-          />
         </div>
       </CardContent>
       <CardFooter className="justify-between space-x-2">
@@ -106,4 +82,4 @@ const TrekDataForm = ({activeStep, setActiveStep}) => {
   )
 }
 
-export default TrekDataForm;
+export default TrekLocationForm;
