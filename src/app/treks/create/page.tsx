@@ -4,23 +4,25 @@ import {
   Card,
 } from "@/components/ui/card";
 import StepForm from '@/components/stepform/stepform';
-import UploadTrekImageForm from './components/uploadtrekimageform';
-import TrekDataForm from '@/app/treks/create/components/trekdataform';
-import TrekLocationForm from './components/treklocationform';
+import UploadTrekImageForm from '../components/uploadtrekimageform';
+import TrekDataForm from '@/app/treks/components/trekdataform';
+import TrekLocationForm from '../components/treklocationform';
 import { TrekFormContext } from './context';
 
 
 
 const CreateTrek = () => {
   const [trekFormInfo, setTrekFormInfo] = useState({});
+
+const [errors, setErrorsInContext] = useState({});
   return (
     <div className="grid grid-cols-6">
       <Card className='col-start-3 col-span-2 p-10'>
-      <TrekFormContext.Provider value={{trekFormInfo, setTrekFormInfo}}>
+      <TrekFormContext.Provider value={{trekFormInfo, setTrekFormInfo, errors, setErrorsInContext}}>
         <StepForm>
           <TrekDataForm />
           <TrekLocationForm />
-          <UploadTrekImageForm />
+          {/* <UploadTrekImageForm /> */}
         </StepForm>
       </TrekFormContext.Provider>
       </Card>

@@ -27,7 +27,7 @@ import { Input } from "@/components/ui/input";
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-import {AuthApi} from '../../services/api';
+import {AuthApi} from '../../services';
 
 
 const formSchema = z.object({

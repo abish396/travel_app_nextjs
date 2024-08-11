@@ -21,19 +21,29 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import StepFormActionButton from '@/components/stepform/stepformactionbutton';
-import { TrekFormContext } from '../context';
-import useForm from "../hooks/useform";
-import { Exo_2 } from "next/font/google";
+import { TrekFormContext } from '../create/context';
+import useForm from "../create/hooks/useform";
+
+const TrekDataFormSchema = {
+  name:"",
+  duration:"",
+  difficulty:"",
+  distance:"",
+  description:"",
+}
+
 
 const TrekDataForm = ({activeStep, setActiveStep}) => {
-  const { trekFormInfo, setTrekFormInfo } = useContext(TrekFormContext);
-  const { handleChange, values, errors, handleSubmit } = useForm(trekFormInfo, setTrekFormInfo);
+  console.log({TrekFormContext})
+  const { trekFormInfo, setTrekFormInfo, errors, setErrorsInContext } = useContext(TrekFormContext);
+  console.log({trekFormInfo, errors})
+  const { handleChange, handleSubmit } = useForm(trekFormInfo, setTrekFormInfo, errors, setErrorsInContext, TrekDataFormSchema);
   // console.log({form})
   
   console.log({trekFormInfo})
-  useEffect(() => {
+  /* useEffect(() => {
     // console.log(trekFormInfo, setTrekFormInfo)
-  }, [])
+  }, []) */
 
   const handleNext = () => {
     handleSubmit(activeStep, 2, setActiveStep);
@@ -50,8 +60,10 @@ const TrekDataForm = ({activeStep, setActiveStep}) => {
 
   const handleInputChange = (e) => {
     // console.log({e});
+    e.preventDefault();
     const name = e.target.name;
     const value = e.target.value;
+    // console.log({name, value})
     handleChange(name, value);
   }
 
@@ -73,12 +85,13 @@ const TrekDataForm = ({activeStep, setActiveStep}) => {
       <CardContent className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="subject">Name of The Trek</Label>
-          <Input id="trekname" name="name" placeholder="Ex KedarKantha Trek" onChange={handleInputChange}/>
+          <Input id="trekname" name="name" value={trekFormInfo.name || ""} placeholder="Ex KedarKantha Trek" onChange={handleInputChange}/>
+          { errors && errors.name ? <p className="text-red-700">{errors.name}</p> : ""}
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-2">
             <Label htmlFor="area">Duration</Label>
-            <Select name="duration" defaultValue="billing" onValueChange={(value) => handleSelectChange("duration", value)}>
+            <Select name="duration" value={trekFormInfo.duration} onValueChange={(value) => handleSelectChange("duration", value)}>
               <SelectTrigger id="area">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
@@ -94,10 +107,11 @@ const TrekDataForm = ({activeStep, setActiveStep}) => {
                 <SelectItem value="9-10 days">9-10 days</SelectItem>
               </SelectContent>
             </Select>
+            { errors && errors.duration ? <p className="text-red-700">{errors.duration}</p> : ""}
           </div>
           <div className="grid gap-2">
             <Label htmlFor="area">Difficulty</Label>
-            <Select name="difficulty" defaultValue="beginner" onValueChange={(value) => handleSelectChange("difficulty", value)}>
+            <Select name="difficulty" value={trekFormInfo.difficulty} defaultValue="beginner" onValueChange={(value) => handleSelectChange("difficulty", value)}>
               <SelectTrigger id="area">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
@@ -107,11 +121,13 @@ const TrekDataForm = ({activeStep, setActiveStep}) => {
                 <SelectItem value="high">High</SelectItem>
               </SelectContent>
             </Select>
+            { errors && errors.difficulty ? <p className="text-red-700">{errors.difficulty}</p> : ""}
           </div>
         </div>
         <div className="grid gap-2">
           <Label htmlFor="subject">Distance</Label>
-          <Input id="distance" name="distance" type="number" min="0" placeholder="Ex. 12km" onChange={handleInputChange}/>
+          <Input id="distance" name="distance" value={trekFormInfo.distance} type="number" min="0" placeholder="Ex. 12km" onChange={handleInputChange}/>
+          { errors && errors.distance ? <p className="text-red-700">{errors.distance}</p> : ""}
         </div>
         {/* <div className="grid gap-2">
           <Label htmlFor="subject">Subject</Label>
@@ -121,10 +137,12 @@ const TrekDataForm = ({activeStep, setActiveStep}) => {
           <Label htmlFor="description">Description</Label>
           <Textarea
             name="description"
+            value={trekFormInfo.description}
             id="description"
             placeholder="Please include all information relevant to your issue."
             onChange={handleInputChange}
           />
+          { errors && errors.description ? <p className="text-red-700">{errors.description}</p> : ""}
         </div>
       </CardContent>
       <CardFooter className="justify-between space-x-2">

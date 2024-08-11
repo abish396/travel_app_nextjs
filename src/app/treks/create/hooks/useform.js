@@ -5,106 +5,158 @@ import { object } from "zod";
 
 const validators = {
     name:(value, errors, setErrors) => {
-        const nextErrors = { ...errors };
         let hasError= false;
         if(!value) {
-            nextErrors["name"] = 'Please Provide Name';
+            errors["name"] = 'Please Provide Name';
             hasError = true;
         } else {
-            delete nextErrors["name"];
+            delete errors["name"];
         }
-        setErrors(nextErrors);
+        setErrors({...errors});
         return hasError;
     },
-    duration:(value) => {
-        const nextErrors = { ...errors };
+    duration:(value, errors, setErrors) => {
         let hasError= false;
         if(!value) {
-            nextErrors["duration"] = 'Please Provide Duration';
+            errors["duration"] = 'Please Provide Duration';
             hasError = true;
         } else {
-            delete nextErrors["duration"];
+            delete errors["duration"];
         }
-        setErrors(nextErrors);
+        setErrors({...errors});
         return hasError;
     },
-    difficulty:(value) => {
-        const nextErrors = { ...errors };
+    difficulty:(value, errors, setErrors) => {
         let hasError= false;
         if(!value) {
-            nextErrors["difficulty"] = 'Please Provide Difficulty';
+            errors["difficulty"] = 'Please Provide Difficulty';
             hasError = true;
         } else {
-            delete nextErrors["difficulty"];
+            delete errors["difficulty"];
         }
-        setErrors(nextErrors);
+        setErrors({...errors});
         return hasError;
     },
-    distance:(value) => {
-        const nextErrors = { ...errors };
+    distance:(value, errors, setErrors) => {
         let hasError= false;
         if(!value) {
-            nextErrors["distance"] = 'Please Provide Distance';
+            errors["distance"] = 'Please Provide Distance';
             hasError = true;
         } else {
-            delete nextErrors["distance"];
+            delete errors["distance"];
         }
-        setErrors(nextErrors);
+        setErrors({...errors});
         return hasError;
     },
-    description:(value) => {
-        const nextErrors = { ...errors };
+    description:(value, errors, setErrors) => {
         let hasError= false;
         if(!value) {
-            nextErrors["description"] = 'Please Provide Description';
+            errors["description"] = 'Please Provide Description';
             hasError = true;
         } else {
-            nextErrors["description"] = ''
+            delete errors["description"];
         }
-        setErrors(nextErrors);
+        setErrors({...errors});
+        return hasError;
+    },
+    addressLine1:(value, errors, setErrors) => {
+        let hasError= false;
+        if(!value) {
+            errors["addressLine1"] = 'Please Provide addressLine1';
+            hasError = true;
+        } else {
+            delete errors["addressLine1"];
+        }
+        setErrors({...errors});
+        return hasError;
+    },
+    addressLine2:(value, errors, setErrors) => {
+        let hasError= false;
+        if(!value) {
+            errors["addressLine2"] = 'Please Provide addressLine2';
+            hasError = true;
+        } else {
+            delete errors["addressLine2"];
+        }
+        setErrors({...errors});
+        return hasError;
+    },
+    state:(value, errors, setErrors) => {
+        let hasError= false;
+        if(!value) {
+            errors["state"] = 'Please Provide state';
+            hasError = true;
+        } else {
+            delete errors["state"];
+        }
+        setErrors({...errors});
+        return hasError;
+    },
+    pincode:(value, errors, setErrors) => {
+        let hasError= false;
+        if(!value) {
+            errors["pincode"] = 'Please Provide pincode';
+            hasError = true;
+        } else {
+            delete errors["pincode"];
+        }
+        setErrors({...errors});
         return hasError;
     }
 }
 
-const useForm = (context, setContext) => {
+const useForm = (context, setContext, errors, setErrorsInContext, formSchema) => {
     //Form values
-    
+    console.log({formSchema})
 
-    const [formValues, setValues] = useState({});
+    // const [formValues, setValues] = useState({});
     //Errors
-    const [errors, setErrors] = useState({});
-
+    // const [errors, setErrors] = useState({});
+    // const formValues = {}
     const handleChange = (name, value) => {
-    
-        const hasError = validators[name](value, errors, setErrors);
-        if(hasError) {
+        
+        const hasError = validators[name](value, errors, setErrorsInContext);
+        console.log({hasError});
+        /* if(hasError) {
             return;
-        }
+        } */
         // formValues[name] = value;
         //Let's set these values in state
         /* console.log(context, name, value);
+        
+        console.log(context); */
+        formSchema[name] = value;
         context[name] = value;
         setContext(context);
-        console.log(context); */
+        /* console.log({formValues});
         setValues({
-            ...values,   //spread operator to store old values
+            ...formValues,   //spread operator to store old values
             [name]:value,
-        })
+        }) */
     
     }
 
 
-    const handleSubmit = (activeStep, lastStep, next) => {
-        if(Object.keys(errors).length === 0) {
+    const handleSubmit = (activeStep, lastStep, next, submitFrom = '') => {
+        for(let key in formSchema) {
+            console.log("formSchema[key]", formSchema[key]);
+            // if(formSchema[key])
+                validators[key](context[key], errors, setErrorsInContext);
+        }
+        console.log({errors});
+        if(Object.keys(errors).length) {
             return;
         }
-        setContext({...context, ...values});
-        
+        // setContext({...context, ...formValues});
+        console.log({activeStep, lastStep})
+        if(activeStep < (lastStep - 1)) {
+            next(activeStep + 1);
+        } else {
+            submitFrom(context)
+        }
     }
 
     return {
-        formValues,
-        errors,
         handleChange,
         handleSubmit
     }

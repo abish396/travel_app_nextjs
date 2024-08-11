@@ -26,7 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import StepFormActionButton from '@/components/stepform/stepformactionbutton';
 import * as tus from 'tus-js-client';
-import { TrekFormContext } from '../context';
+import { TrekFormContext } from '../create/context';
 
 
 const formSchema = z.object({
@@ -131,4 +131,4 @@ const UploadTrekImageForm = ({activeStep, setActiveStep}) => {
   )
 }
 
-export default UploadTrekImageForm;
+export default UploadTrekImageForm;   
