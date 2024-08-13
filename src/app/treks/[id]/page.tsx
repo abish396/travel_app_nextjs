@@ -46,7 +46,7 @@ export default function TrekDetails() {
                                 <li><span className="font-black">Elevation</span>:{mockData.elevation}</li>
                             </ul>
                         </div>
-                        <div className="h-32 mt-5text-base">AMENITIES</div>
+                        <div className="h-32 mt-5 text-base">AMENITIES</div>
                     </div>
                     <div className='fixed' style={{left: "65%"}}>
                         <Card className="w-[350px]">
