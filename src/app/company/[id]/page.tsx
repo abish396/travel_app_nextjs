@@ -14,16 +14,20 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui/tabs"
+} from "@/components/ui/tabs";
+import TrekList from '../../../components/treks/treklist';
 
 export default function CompanyDetails() {
   return (
-    <Tabs defaultValue="account" className="w-[400px]">
-      <TabsList className="grid w-full grid-cols-2">
+    <Tabs defaultValue="treks" className="container w-full">
+      <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="treks">Treks</TabsTrigger>
         <TabsTrigger value="homestays">Homestays</TabsTrigger>
+        <TabsTrigger value="adventure">Adventure</TabsTrigger>
+        <TabsTrigger value="expedition">Expedition</TabsTrigger>
       </TabsList>
       <TabsContent value="treks">
+        <TrekList />
       </TabsContent>
       <TabsContent value="homestays">
       </TabsContent>

@@ -34,13 +34,13 @@ const TrekDataFormSchema = {
 
 
 const TrekDataForm = ({activeStep, setActiveStep}) => {
-  console.log({TrekFormContext})
+  // console.log({TrekFormContext})
   const { trekFormInfo, setTrekFormInfo, errors, setErrorsInContext } = useContext(TrekFormContext);
-  console.log({trekFormInfo, errors})
+  // console.log({trekFormInfo, errors})
   const { handleChange, handleSubmit } = useForm(trekFormInfo, setTrekFormInfo, errors, setErrorsInContext, TrekDataFormSchema);
   // console.log({form})
   
-  console.log({trekFormInfo})
+  // console.log({trekFormInfo})
   /* useEffect(() => {
     // console.log(trekFormInfo, setTrekFormInfo)
   }, []) */

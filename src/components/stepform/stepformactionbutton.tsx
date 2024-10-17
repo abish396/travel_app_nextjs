@@ -12,13 +12,13 @@ interface StepFormActionButton {
 export default function StepFormActionButton({previous, next}) {
 
   return (
-    <div className="grid grid-flow-col justify-stretch">
-      <div>
-        <Button type="button" className="w-1/2" onClick={previous}>Previous</Button>
+    <>
+      <div className="w-full">
+        <Button type="button" className="w-full" onClick={previous}>Previous</Button>
       </div>
-      <div>
-        <Button type="button" className="w-1/2" onClick={next}>Next</Button>
+      <div className="w-full">
+        <Button type="button" className="w-full" onClick={next}>Next</Button>
       </div>
-    </div>
+    </>
   )
 }

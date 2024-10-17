@@ -12,6 +12,7 @@ interface StepFormProps {
 export default function StepForm(props:any) {
   const [ activeStep, setActiveStep ] = useState(0);
   const child = props.children[activeStep];
+  console.log(activeStep, props.children, React.isValidElement(child))
   let childrenWithProps;
   const additionalProps = {
     activeStep,
